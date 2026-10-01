@@ -33,12 +33,12 @@ SilverBullet's built-in Share feature pulls a page from GitHub. Do this once per
    share.mode: pull
    ---
    ```
-3. Run the command **Share: Page** (`Ctrl-p`). The page is replaced with the published version and the `share.hash` line is filled in.
+3. Run the command **Share: Page** from the command palette. SilverBullet asks whether to overwrite your local page with the remote one - choose **Ok**. The page is replaced with the published version and a `share.hash` line is filled in.
 4. Run **System: Reload** (`Ctrl-Alt-r`).
 
 ## Update
 
-Open an installed page and run **Share: Page** again. It pulls only when the published page changed, and asks before overwriting local edits.
+Open an installed page and run **Share: Page** again. It pulls only when the published page changed, and asks before overwriting local edits. Run **System: Reload** afterwards.
 
 ## Install everything
 
@@ -51,7 +51,7 @@ for n in Folding MobileUX TableEditor TextDensity PagePickerInput PlainTags Pros
 done
 ```
 
-Then open each page once and run **Share: Page**, then **System: Reload**.
+Then open each page once, run **Share: Page** and choose **Ok**, then run **System: Reload**.
 
 ## Compatibility
 
