@@ -2,56 +2,51 @@
 
 Small add-ons for [SilverBullet](https://silverbullet.md) 2.x, written as Space Lua library pages. Each one is a single Markdown page: no build step, no plug binary.
 
+## Quick start
+
+Create one page, `Library/neupsh/Plugins`, containing only this:
+
+```yaml
+---
+share.uri: "github:neupsh/silverbullet-plugins/Plugins.md"
+share.mode: pull
+---
+```
+
+Run **Share: Page** (`Ctrl-p`) and choose **Ok** on the overwrite prompt. The page becomes a list of every add-on with **Install**, **Update** and **Remove** buttons, plus **Install all** and **Update all**. The same actions are in the command palette as `Plugins: Install`, `Plugins: Update`, `Plugins: Remove`, `Plugins: Install All` and `Plugins: Update All`. Each change reloads SilverBullet for you.
+
+Keep the page path `Library/neupsh/<Name>`: several add-ons read their own page by name.
+
 ## What is here
 
 | Page | What it does |
 | --- | --- |
+| `Plugins` | The manager page above. |
 | `Folding` | Collapse a heading section or bullet subtree; optionally remember the fold per page. |
-| `MobileUX` | Makes the command palette, page picker and other modals usable on a phone. |
 | `TableEditor` | Edit Markdown tables in place in the rendered view. |
-| `TextDensity` | Smaller text overall, with the sizes set under `config`. |
-| `PagePickerInput` | Copies the highlighted page-picker result into the input. |
 | `PlainTags` | Shows inline `#tags` as plain linked words (toggle command). |
 | `ProseCopy` | Copies a selection as prose, with tags and wiki links flattened. |
 | `MathDollarGuard` | Stops "$23B" from being read as inline LaTeX. Needs [Silverbullet-Math](https://github.com/Mr-xRed/Silverbullet-Math). |
-| `VersionBadge` | Shows the SilverBullet version in the top bar. |
+| `PagePickerInput` | Copies the highlighted page-picker result into the input. |
+| `MobileUX` | Makes the command palette, page picker and other modals usable on a phone. |
+| `TextDensity` | Smaller text overall, with the sizes set under `config`. |
 | `LinkedWidgets` | Moves the Linked Tasks widget below the page body. Changes the default layout. |
 | `TreeViewLinks` | Makes [Tree View](https://github.com/joekrill/silverbullet-treeview) rows open in a new tab on Ctrl/middle-click. Needs that plug. |
+| `VersionBadge` | Shows the SilverBullet version in the top bar. |
+| `SyncBadge` | Shows how long ago git last fetched, in the top bar. Needs a git space and shell access. |
+| `PageDates` | A Created / Updated line on every page, with the created date from git. Needs a git space and shell access. |
+| `JournalFeatures` | Prev/next day links, a rollup of everything scheduled for the day, and a stream page. Follows `journal.prefix`. |
+| `JournalCalendar` | A month-grid picker that opens or creates any journal day. |
+| `JournalPromote` | Moves a bullet and its children to their own page, leaving a linked task. |
+| `JournalConventions` | A short note on working in the journal first and promoting later. |
 
 Each page documents itself at the top. Read it before installing the ones that change layout (`LinkedWidgets`, `TextDensity`, `MobileUX`).
 
-## Install a page
+## Without the manager
 
-SilverBullet's built-in Share feature pulls a page from GitHub. Do this once per page:
+Any single page installs by hand with SilverBullet's built-in Share feature: create `Library/neupsh/<Name>` with the `share.uri` and `share.mode: pull` lines above (pointing at that page's file), run **Share: Page**, choose **Ok**, then **System: Reload**.
 
-1. Create a page named `Library/neupsh/<Name>`, for example `Library/neupsh/Folding`. Keep that exact path: `TableEditor` and a few others read their own page by name.
-2. Put this at the top, with the page name in the URL:
-
-   ```yaml
-   ---
-   share.uri: "github:neupsh/silverbullet-plugins/Folding.md"
-   share.mode: pull
-   ---
-   ```
-3. Run the command **Share: Page** from the command palette. SilverBullet asks whether to overwrite your local page with the remote one - choose **Ok**. The page is replaced with the published version and a `share.hash` line is filled in.
-4. Run **System: Reload** (`Ctrl-Alt-r`).
-
-## Update
-
-Open an installed page and run **Share: Page** again. It pulls only when the published page changed, and asks before overwriting local edits. Run **System: Reload** afterwards.
-
-## Install everything
-
-Create each page above as in "Install a page", or script it against the space folder:
-
-```bash
-cd /path/to/your/space && mkdir -p Library/neupsh
-for n in Folding MobileUX TableEditor TextDensity PagePickerInput PlainTags ProseCopy MathDollarGuard VersionBadge LinkedWidgets TreeViewLinks; do
-  printf -- '---\nshare.uri: "github:neupsh/silverbullet-plugins/%s.md"\nshare.mode: pull\n---\n' "$n" > "Library/neupsh/$n.md"
-done
-```
-
-Then open each page once, run **Share: Page** and choose **Ok**, then run **System: Reload**.
+To add a page to the repo, add its file and one row to the `plugins.catalog` list at the top of `Plugins.md`.
 
 ## Compatibility
 
