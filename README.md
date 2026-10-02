@@ -42,6 +42,8 @@ Keep the page path `Library/neupsh/<Name>`: several add-ons read their own page 
 
 Each page documents itself at the top. Read it before installing the ones that change layout (`LinkedWidgets`, `TextDensity`, `MobileUX`).
 
+GitHub serves published files with a cache of about five minutes, so a push can take that long to show up as an update.
+
 ## Without the manager
 
 Any single page installs by hand with SilverBullet's built-in Share feature: create `Library/neupsh/<Name>` with the `share.uri` and `share.mode: pull` lines above (pointing at that page's file), run **Share: Page**, choose **Ok**, then **System: Reload**.
