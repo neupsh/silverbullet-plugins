@@ -64,6 +64,12 @@ local function entry(name)
   error("Unknown plugin: " .. tostring(name))
 end
 
+-- A command run from a button receives its argument wrapped in a one-item table; the palette passes nothing.
+local function argName(arg)
+  if type(arg) == "table" then return arg[1] end
+  return arg
+end
+
 local function path(name)
   entry(name)
   return FOLDER .. name
@@ -126,7 +132,8 @@ end
 
 command.define {
   name = "Plugins: Install",
-  run = function(name)
+  run = function(arg)
+    local name = argName(arg)
     if not name then
       local options = {}
       for _, e in ipairs(plugins.catalog) do
@@ -144,7 +151,8 @@ command.define {
 
 command.define {
   name = "Plugins: Update",
-  run = function(name)
+  run = function(arg)
+    local name = argName(arg)
     if not name then
       local options = {}
       for _, e in ipairs(plugins.catalog) do
@@ -162,7 +170,8 @@ command.define {
 
 command.define {
   name = "Plugins: Remove",
-  run = function(name)
+  run = function(arg)
+    local name = argName(arg)
     if not name then
       local options = {}
       for _, e in ipairs(plugins.catalog) do
@@ -244,22 +253,26 @@ function plugins.panel()
   local all = '<p class="sb-plugins-all">'
     .. '<button class="sb-plugins-btn" onclick="window.client.runCommandByName(\'Plugins: Install All\');return false">Install all</button>'
     .. '<button class="sb-plugins-btn" onclick="window.client.runCommandByName(\'Plugins: Update All\');return false">Update all</button></p>'
-  return widget.htmlBlock(all .. '<table class="sb-plugins">' .. table.concat(rows) .. '</table>')
+  return widget.htmlBlock(all .. '<table class="sb-plugins"><colgroup><col class="sb-plugins-c1"><col><col class="sb-plugins-c3"></colgroup>' .. table.concat(rows) .. '</table>')
 end
 ```
 
 ```space-style
-.sb-plugins { width: 100%; border-collapse: collapse; }
+.sb-plugins { white-space: normal; width: 100%; max-width: 100%; table-layout: fixed; border-collapse: collapse; }
+.sb-plugins col.sb-plugins-c1 { width: 11em; }
+.sb-plugins col.sb-plugins-c3 { width: 12.5em; }
 .sb-plugins td, .sb-plugins th { padding: 6px 8px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--subtle-color, #ddd); }
 .sb-plugins-group th { font-size: 0.85em; text-transform: uppercase; opacity: 0.7; padding-top: 14px; }
-.sb-plugins-name { font-weight: 600; white-space: nowrap; }
-.sb-plugins-act { white-space: nowrap; text-align: right; }
+.sb-plugins-name { font-weight: 600; overflow-wrap: anywhere; }
+.sb-plugins-act { text-align: right; }
 .sb-plugins-act div { font-size: 0.8em; opacity: 0.75; margin-bottom: 2px; }
 .sb-plugins-edited { color: var(--editor-warning-color, #b8860b); font-weight: 600; opacity: 1; }
 .sb-plugins-btn { margin-left: 6px; padding: 2px 10px; cursor: pointer; }
 .sb-plugins-all { margin: 0 0 8px; }
 .sb-plugins-all .sb-plugins-btn { margin: 0 8px 0 0; }
 @media (max-width: 600px) {
-  .sb-plugins td:nth-child(2) { display: none; }
+  .sb-plugins col.sb-plugins-c1 { width: 6.5em; }
+  .sb-plugins col.sb-plugins-c3 { width: 9em; }
+  .sb-plugins-btn { margin: 2px 0 0 4px; padding: 2px 6px; }
 }
 ```
