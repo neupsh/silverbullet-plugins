@@ -50,6 +50,45 @@ Any single page installs by hand with SilverBullet's built-in Share feature: cre
 
 To add a page to the repo, add its file and one row to the `plugins.catalog` list at the top of `Plugins.md`.
 
+## Other add-ons I use
+
+These are other people's work, not in this repo. Each installs the same way: create the page at the path shown with the two `share.*` lines, run **Share: Page**, choose **Ok**, then **System: Reload**.
+
+| Page to create | `share.uri` | What it is |
+| --- | --- | --- |
+| `Library/mrmugame/Silversearch` | `ghr:MrMugame/silversearch/PLUG.md` | Full-text search. |
+| `Library/mrmugame/Silverbullet-Math` | `https://github.com/MrMugame/silverbullet-math/blob/main/Math.md` | LaTeX maths. `MathDollarGuard` needs it. |
+| `Library/mrmugame/Silverbullet-PDF` | `ghr:MrMugame/silverbullet-pdf/PLUG.md` | PDF viewer. |
+| `Library/LogeshG5/silverbullet-excalidraw` | `https://github.com/LogeshG5/silverbullet-excalidraw/blob/main/PLUG.md` | Excalidraw drawings. |
+| `Library/silverbullet-mermaid` | `https://github.com/silverbulletmd/silverbullet-mermaid/blob/main/PLUG.md` | Mermaid diagrams. |
+| `Library/zefhemel/Git` | `https://github.com/zefhemel/silverbullet-libraries/blob/main/Git.md` | Git commands. |
+| `Library/silverbulletmd/markdown-prettify/Prettify` | `ghr:silverbulletmd/silverbullet-markdown-prettify/Prettify.md` | Prettier rendering of Markdown. |
+| `Library/Mr-xRed/DocumentExplorer` | `https://github.com/Mr-xRed/silverbullet-libraries/blob/main/DocumentExplorer.md` | Browse documents. |
+| `Library/jagwarrx/Flashcards` | `github:jagwarrx/styles/flashcards.md` | Flashcards styling. |
+| `Library/thepaperpilot/Copyable` | `github:thepaperpilot/silverbullet-libraries/Library/thepaperpilot/Copyable.md` | Text that copies itself on click. |
+| `Library/Mr-xRed/AdvancedPanelControl` | `github:Mr-xRed/silverbullet-libraries/AdvancedPanelControl.md` | Side-panel control. Also needs `UnifiedAdvancedPanelControl.js` from the same repo saved as `Library/Mr-xRed/UnifiedAdvancedPanelControl.js`. |
+
+Example, for Silversearch:
+
+```yaml
+---
+share.uri: "ghr:MrMugame/silversearch/PLUG.md"
+share.mode: pull
+---
+```
+
+**Tree View** is a compiled plug, not a library page. Add this to the Space Lua block in `CONFIG.md`, then run **Plugs: Update** and reload:
+
+```lua
+config.set {
+  plugs = {
+    "github:joekrill/silverbullet-treeview/treeview.plug.js"
+  }
+}
+```
+
+The last two `github:` addresses in the table are my best reading of where those pages live and were not run end to end. If one fails, open its repo and copy the file path.
+
 ## Compatibility
 
 Written and tested against SilverBullet 2.10 and 2.11. `MobileUX`, `TableEditor`, `PagePickerInput` and `TreeViewLinks` rely on internal editor markup that SilverBullet does not promise to keep, so a SilverBullet upgrade can break them.
