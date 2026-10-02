@@ -1,7 +1,7 @@
 ---
 name: Library/neupsh/MathDollarGuard
 tags: meta/library
-description: "Stops a plain dollar amount ("$23B in 2021") from being swallowed as inline LaTeX."
+description: "Stops a plain dollar amount like $23B from being swallowed as inline LaTeX."
 ---
 
 # Math dollar guard

@@ -114,7 +114,7 @@ event.listen {
     local parts = {}
     local iso, floored = gitCreated(pageName)
     if iso and floored then
-      parts[#parts + 1] = '<span title="Added in the repo's first commit - it predates the git history, so its real creation date is unknown">In space since <b>'
+      parts[#parts + 1] = '<span title="Added in the first commit of the repository - it predates the git history, so its real creation date is unknown">In space since <b>'
         .. string.sub(iso, 1, 10) .. "</b></span>"
     elseif iso then
       parts[#parts + 1] = '<span title="First commit that added this page (git log --follow --diff-filter=A)">Created <b>'
