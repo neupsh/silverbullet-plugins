@@ -261,7 +261,7 @@ end
 .sb-plugins { white-space: normal; width: 100%; max-width: 100%; table-layout: fixed; border-collapse: collapse; }
 .sb-plugins col.sb-plugins-c1 { width: 11em; }
 .sb-plugins col.sb-plugins-c3 { width: 12.5em; }
-.sb-plugins td, .sb-plugins th { padding: 6px 8px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--subtle-color, #ddd); }
+.sb-plugins td, .sb-plugins th { white-space: normal; overflow-wrap: anywhere; padding: 6px 8px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--subtle-color, #ddd); }
 .sb-plugins-group th { font-size: 0.85em; text-transform: uppercase; opacity: 0.7; padding-top: 14px; }
 .sb-plugins-name { font-weight: 600; overflow-wrap: anywhere; }
 .sb-plugins-act { text-align: right; }
