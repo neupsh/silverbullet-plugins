@@ -32,6 +32,8 @@ Keep the page path `Library/neupsh/<Name>`: several add-ons read their own page 
 | `TextDensity` | Smaller text overall, with the sizes set under `config`. |
 | `LinkedWidgets` | Moves the Linked Tasks widget below the page body. Changes the default layout. |
 | `TreeViewLinks` | Makes [Tree View](https://github.com/joekrill/silverbullet-treeview) rows open in a new tab on Ctrl/middle-click. Needs that plug. |
+| `EditorLayout` | A wider editor (80%, 95% on a phone) and headings that do not indent. |
+| `TokyoNightTheme` | A Tokyo Night inspired dark theme. |
 | `VersionBadge` | Shows the SilverBullet version in the top bar. |
 | `SyncBadge` | Shows how long ago git last fetched, in the top bar. Needs a git space and shell access. |
 | `PageDates` | A Created / Updated line on every page, with the created date from git. Needs a git space and shell access. |

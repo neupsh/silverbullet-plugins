@@ -48,6 +48,8 @@ plugins.catalog = {
   { "TextDensity", "Layout", "Smaller text overall, sizes set under config." },
   { "LinkedWidgets", "Layout", "Move the Linked Tasks widget below the page body." },
   { "TreeViewLinks", "Layout", "Open Tree View rows in a new tab on Ctrl/middle-click. Needs the Tree View plug." },
+  { "EditorLayout", "Appearance", "Wider editor (80%, 95% on a phone) and headings that do not indent." },
+  { "TokyoNightTheme", "Appearance", "A Tokyo Night inspired dark theme." },
   { "VersionBadge", "Top bar and page info", "Show the SilverBullet version in the top bar." },
   { "SyncBadge", "Top bar and page info", "Show how long ago git last fetched. Needs a git space and shell access." },
   { "PageDates", "Top bar and page info", "Created / Updated line on every page, created date from git." },
