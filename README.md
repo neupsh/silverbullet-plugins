@@ -15,6 +15,8 @@ share.mode: pull
 
 Run **Share: Page** (`Ctrl-p`) and choose **Ok** on the overwrite prompt. The page becomes a list of every add-on with **Install**, **Update** and **Remove** buttons, plus **Install all** and **Update all**. The same actions are in the command palette as `Plugins: Install`, `Plugins: Update`, `Plugins: Remove`, `Plugins: Install All` and `Plugins: Update All`. Each change reloads SilverBullet for you. Pages with a toolbar button (`Folding`, `JournalCalendar`) add it to the top bar when installed; no `CONFIG.md` edit is needed.
 
+Installed pages are tagged `meta/library`, so the normal page picker hides them. Open the manager with `Navigate: Meta Picker` (or the Meta segment of `Navigate: Tree`), or type the path `Library/neupsh/Plugins` in a link such as `[[^Library/neupsh/Plugins]]`.
+
 Keep the page path `Library/neupsh/<Name>`: several add-ons read their own page by name.
 
 ## What is here
