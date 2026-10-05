@@ -106,11 +106,25 @@ local function readRemote(name)
   return uri, text
 end
 
+-- Records which catalog pages exist, for the next boot. On a warm browser cache the client has
+-- not listed the space yet when this page loads, so pageExists is false for every page, this one
+-- included. Boot then reads this record instead. Install and Remove refresh it too, so the next
+-- reload already knows what changed.
+function plugins.rememberInstalled()
+  local names = {}
+  for _, e in ipairs(plugins.catalog) do
+    if space.pageExists(FOLDER .. e[1]) then names[#names + 1] = e[1] end
+  end
+  clientStore.set("plugins.installed", names)
+  return names
+end
+
 -- Writes the published page and records the hash, so the first Share: Page has nothing to ask about.
 function plugins.install(name)
   local uri, text = readRemote(name)
   local stamped = share.setFrontmatter({ uri = uri, hash = share.contentHash(text), mode = "pull" }, text)
   space.writePage(path(name), stamped)
+  plugins.rememberInstalled()
 end
 
 -- True if the page changed. Share asks before overwriting local edits.
@@ -120,6 +134,7 @@ end
 
 function plugins.remove(name)
   space.deletePage(path(name))
+  plugins.rememberInstalled()
 end
 
 local function reload()
@@ -239,18 +254,11 @@ command.define {
 -- already there. Deduplicated by command, so running it again (this page loads twice at boot,
 -- and it re-runs on page load) never doubles a button. Because it reads what is installed, Remove
 -- takes a page's buttons away on the next reload.
--- On a warm browser cache the client has not listed the space yet when this page loads, so
--- pageExists is false for every page, this one included. Then the last list seen is used.
 local function installedNames()
   if not space.pageExists(FOLDER .. "Plugins") then
     return clientStore.get("plugins.installed") or {}
   end
-  local names = {}
-  for _, e in ipairs(plugins.catalog) do
-    if space.pageExists(FOLDER .. e[1]) then names[#names + 1] = e[1] end
-  end
-  clientStore.set("plugins.installed", names)
-  return names
+  return plugins.rememberInstalled()
 end
 
 function plugins.syncButtons()
