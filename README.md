@@ -26,6 +26,7 @@ Keep the page path `Library/neupsh/<Name>`: several add-ons read their own page 
 | `Plugins` | The manager page above. |
 | `Folding` | Collapse a heading section or bullet subtree; optionally remember the fold per page. |
 | `TableEditor` | Edit Markdown tables in place in the rendered view. |
+| `ListConvert` | Turns the selected lines into bullets, checkboxes, a numbered list or plain lines (`List: Bullets`, `List: Checkboxes`, `List: Numbered`, `List: Plain Lines`). |
 | `PlainTags` | Shows inline `#tags` as plain linked words (toggle command). |
 | `ProseCopy` | Copies a selection as prose, with tags and wiki links flattened. |
 | `MathDollarGuard` | Stops "$23B" from being read as inline LaTeX. Needs [Silverbullet-Math](https://github.com/Mr-xRed/Silverbullet-Math). |

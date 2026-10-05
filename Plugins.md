@@ -44,6 +44,7 @@ plugins.catalog = {
     { { icon = "minimize2", command = "Fold: Toggle", description = "Fold/unfold the section or bullet at the cursor" },
       { icon = "bookmark", command = "Fold: Keep Folded", description = "Remember this heading/bullet as folded" } } },
   { "TableEditor", "Editing", "Edit Markdown tables in place in the rendered view." },
+  { "ListConvert", "Editing", "Turn selected lines into bullets, checkboxes, a numbered list or plain lines." },
   { "PlainTags", "Editing", "Show inline #tags as plain linked words (toggle command)." },
   { "ProseCopy", "Editing", "Copy a selection as prose, with tags and wiki links flattened." },
   { "MathDollarGuard", "Editing", "Stop \"$23B\" being read as inline LaTeX. Needs Silverbullet-Math." },
