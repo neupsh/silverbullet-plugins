@@ -25,7 +25,7 @@ After that, this page lists everything and keeps itself current: **Update** on t
 ${plugins.panel()}
 
 - **Install** writes the page. **Update** pulls the published version, and asks first if you edited your copy. **Remove** deletes the page.
-- Pages that have a toolbar button (`Folding`, `JournalCalendar`, `TreeViewLinks`) add it to the top bar when installed, and it goes when the page is removed. Existing buttons are kept.
+- Pages that have a toolbar button (`Folding`, `JournalCalendar`) add it to the top bar when installed, and it goes when the page is removed. Existing buttons are kept.
 - Every change ends with a reload so new commands and styles take effect. Commands are also in the palette: `Plugins: Install`, `Plugins: Update`, `Plugins: Remove`, `Plugins: Update All`.
 - A page marked **edited** differs from what was installed. Update replaces your edits after a confirm.
 - Keep the page path `Library/neupsh/<Name>`. Several add-ons read their own page by that name.
@@ -51,8 +51,6 @@ plugins.catalog = {
   { "MobileUX", "Layout", "Make the command palette, page picker and other modals usable on a phone." },
   { "TextDensity", "Layout", "Smaller text overall, sizes set under config." },
   { "LinkedWidgets", "Layout", "Move the Linked Tasks widget below the page body." },
-  { "TreeViewLinks", "Layout", "Open Tree View rows in a new tab on Ctrl/middle-click. Needs the Tree View plug.",
-    { { icon = "sidebar", command = "Tree View: Toggle", description = "Toggle tree view" } } },
   { "EditorLayout", "Appearance", "Wider editor (80%, 95% on a phone) and headings that do not indent." },
   { "TokyoNightTheme", "Appearance", "A Tokyo Night inspired dark theme." },
   { "VersionBadge", "Top bar and page info", "Show the SilverBullet version in the top bar." },
@@ -236,14 +234,30 @@ command.define {
 -- already there. Deduplicated by command, so running it again (this page loads twice at boot,
 -- and it re-runs on page load) never doubles a button. Because it reads what is installed, Remove
 -- takes a page's buttons away on the next reload.
+-- On a warm browser cache the client has not listed the space yet when this page loads, so
+-- pageExists is false for every page, this one included. Then the last list seen is used.
+local function installedNames()
+  if not space.pageExists(FOLDER .. "Plugins") then
+    return clientStore.get("plugins.installed") or {}
+  end
+  local names = {}
+  for _, e in ipairs(plugins.catalog) do
+    if space.pageExists(FOLDER .. e[1]) then names[#names + 1] = e[1] end
+  end
+  clientStore.set("plugins.installed", names)
+  return names
+end
+
 function plugins.syncButtons()
   local buttons = config.get("actionButtons", {})
+  local installed = {}
+  for _, n in ipairs(installedNames()) do installed[n] = true end
   local seen = {}
   for _, b in ipairs(buttons) do
     seen[b.command or b.description] = true
   end
   for _, e in ipairs(plugins.catalog) do
-    if e[4] and space.pageExists(FOLDER .. e[1]) then
+    if e[4] and installed[e[1]] then
       for _, b in ipairs(e[4]) do
         if not seen[b.command] then
           table.insert(buttons, { icon = b.icon, command = b.command, description = b.description })

@@ -13,7 +13,7 @@ share.mode: pull
 ---
 ```
 
-Run **Share: Page** (`Ctrl-p`) and choose **Ok** on the overwrite prompt. The page becomes a list of every add-on with **Install**, **Update** and **Remove** buttons, plus **Install all** and **Update all**. The same actions are in the command palette as `Plugins: Install`, `Plugins: Update`, `Plugins: Remove`, `Plugins: Install All` and `Plugins: Update All`. Each change reloads SilverBullet for you. Pages with a toolbar button (`Folding`, `JournalCalendar`, `TreeViewLinks`) add it to the top bar when installed; no `CONFIG.md` edit is needed.
+Run **Share: Page** (`Ctrl-p`) and choose **Ok** on the overwrite prompt. The page becomes a list of every add-on with **Install**, **Update** and **Remove** buttons, plus **Install all** and **Update all**. The same actions are in the command palette as `Plugins: Install`, `Plugins: Update`, `Plugins: Remove`, `Plugins: Install All` and `Plugins: Update All`. Each change reloads SilverBullet for you. Pages with a toolbar button (`Folding`, `JournalCalendar`) add it to the top bar when installed; no `CONFIG.md` edit is needed.
 
 Keep the page path `Library/neupsh/<Name>`: several add-ons read their own page by name.
 
@@ -31,7 +31,6 @@ Keep the page path `Library/neupsh/<Name>`: several add-ons read their own page 
 | `MobileUX` | Makes the command palette, page picker and other modals usable on a phone. |
 | `TextDensity` | Smaller text overall, with the sizes set under `config`. |
 | `LinkedWidgets` | Moves the Linked Tasks widget below the page body. Changes the default layout. |
-| `TreeViewLinks` | Makes [Tree View](https://github.com/joekrill/silverbullet-treeview) rows open in a new tab on Ctrl/middle-click. Needs that plug. |
 | `EditorLayout` | A wider editor (80%, 95% on a phone) and headings that do not indent. |
 | `TokyoNightTheme` | A Tokyo Night inspired dark theme. |
 | `VersionBadge` | Shows the SilverBullet version in the top bar. |
@@ -79,21 +78,13 @@ share.mode: pull
 ---
 ```
 
-**Tree View** is a compiled plug, not a library page. Add this to the Space Lua block in `CONFIG.md`, then run **Plugs: Update** and reload:
-
-```lua
-config.set {
-  plugs = {
-    "github:joekrill/silverbullet-treeview/treeview.plug.js"
-  }
-}
-```
+SilverBullet now has a built-in file tree (`Navigate: Tree`), so the Tree View plug is no longer needed.
 
 The last two `github:` addresses in the table are my best reading of where those pages live and were not run end to end. If one fails, open its repo and copy the file path.
 
 ## Compatibility
 
-Written and tested against SilverBullet 2.10 and 2.11. `MobileUX`, `TableEditor`, `PagePickerInput` and `TreeViewLinks` rely on internal editor markup that SilverBullet does not promise to keep, so a SilverBullet upgrade can break them.
+Written and tested against SilverBullet 2.10 and 2.11. `MobileUX`, `TableEditor` and `PagePickerInput` rely on internal editor markup that SilverBullet does not promise to keep, so a SilverBullet upgrade can break them.
 
 ## Licence
 
