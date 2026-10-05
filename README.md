@@ -13,7 +13,7 @@ share.mode: pull
 ---
 ```
 
-Run **Share: Page** (`Ctrl-p`) and choose **Ok** on the overwrite prompt. The page becomes a list of every add-on with **Install**, **Update** and **Remove** buttons, plus **Install all** and **Update all**. The same actions are in the command palette as `Plugins: Install`, `Plugins: Update`, `Plugins: Remove`, `Plugins: Install All` and `Plugins: Update All`. Each change reloads SilverBullet for you. Pages with a toolbar button (`Folding`, `JournalCalendar`) add it to the top bar when installed; no `CONFIG.md` edit is needed.
+Run **Share: Page** (`Ctrl-p`) and choose **Ok** on the overwrite prompt. The page becomes a list of every add-on with **Install**, **Update** and **Remove** buttons, plus **Install all** and **Update all**. The same actions are in the command palette as `Plugins: Install`, `Plugins: Update`, `Plugins: Remove`, `Plugins: Install All` and `Plugins: Update All`. Each change reloads SilverBullet for you. Pages with a toolbar button (`Folding`, `JournalCalendar`, `PageCreate`, `SyncReload`) add it to the top bar when installed; no `CONFIG.md` edit is needed.
 
 Installed pages are tagged `meta/library`, so the normal page picker hides them. Open the manager with `Navigate: Meta Picker` (or the Meta segment of `Navigate: Tree`), or type the path `Library/neupsh/Plugins` in a link such as `[[^Library/neupsh/Plugins]]`.
 
@@ -35,6 +35,8 @@ Keep the page path `Library/neupsh/<Name>`: several add-ons read their own page 
 | `LinkedWidgets` | Moves the Linked Tasks widget below the page body. Changes the default layout. |
 | `EditorLayout` | A wider editor (80%, 95% on a phone) and headings that do not indent. |
 | `TokyoNightTheme` | A Tokyo Night inspired dark theme. |
+| `PageCreate` | A `Page: Create Page` command with create and delete toolbar buttons. |
+| `SyncReload` | A `Sync and Reload` command and toolbar button. |
 | `VersionBadge` | Shows the SilverBullet version in the top bar. |
 | `SyncBadge` | Shows how long ago git last fetched, in the top bar. Needs a git space and shell access. |
 | `PageDates` | A Created / Updated line on every page, with the created date from git. Needs a git space and shell access. |
@@ -78,6 +80,15 @@ Example, for Silversearch:
 share.uri: "ghr:MrMugame/silversearch/PLUG.md"
 share.mode: pull
 ---
+```
+
+Buttons for these add-ons are not added by the manager. Put them in `CONFIG.md` by adding to the `actionButtons` list (keep the defaults, for example with `config.set("actionButtons", ...)` after reading `config.get("actionButtons")`), using these entries:
+
+```lua
+{ icon = "search", command = "Silversearch: Search", description = "Search" },
+{ icon = "git-commit", command = "Git: Commit", description = "Commit into Git repository" },
+{ icon = "zap", command = "Quick Note", description = "New Quick Note" },
+{ icon = "sidebar", command = "Navigate: Tree", description = "Toggle file tree" },
 ```
 
 SilverBullet now has a built-in file tree (`Navigate: Tree`), so the Tree View plug is no longer needed.

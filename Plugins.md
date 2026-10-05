@@ -25,7 +25,7 @@ After that, this page lists everything and keeps itself current: **Update** on t
 ${plugins.panel()}
 
 - **Install** writes the page. **Update** pulls the published version, and asks first if you edited your copy. **Remove** deletes the page.
-- Pages that have a toolbar button (`Folding`, `JournalCalendar`) add it to the top bar when installed, and it goes when the page is removed. Existing buttons are kept.
+- Pages that have a toolbar button (`Folding`, `JournalCalendar`, `PageCreate`, `SyncReload`) add it to the top bar when installed, and it goes when the page is removed. Existing buttons are kept.
 - Every change ends with a reload so new commands and styles take effect. Commands are also in the palette: `Plugins: Install`, `Plugins: Update`, `Plugins: Remove`, `Plugins: Update All`.
 - A page marked **edited** differs from what was installed. Update replaces your edits after a confirm.
 - Keep the page path `Library/neupsh/<Name>`. Several add-ons read their own page by that name.
@@ -56,6 +56,11 @@ plugins.catalog = {
   { "VersionBadge", "Top bar and page info", "Show the SilverBullet version in the top bar." },
   { "SyncBadge", "Top bar and page info", "Show how long ago git last fetched. Needs a git space and shell access." },
   { "PageDates", "Top bar and page info", "Created / Updated line on every page, created date from git." },
+  { "PageCreate", "Toolbar", "Page: Create Page command, plus create and delete buttons.",
+    { { icon = "file-plus", command = "Page: Create Page", description = "Create page" },
+      { icon = "trash", command = "Page: Delete", description = "Delete page" } } },
+  { "SyncReload", "Toolbar", "A Sync and Reload command and button that reloads the client.",
+    { { icon = "rotate-cw", command = "Sync and Reload", description = "Sync and reload the client" } } },
   { "JournalFeatures", "Journal", "Prev/next day links, a rollup of everything scheduled for the day, a stream page." },
   { "JournalCalendar", "Journal", "Month-grid picker that opens or creates any journal day.",
     { { icon = "sun", command = "Journal: Today", description = "Open today's journal" },
