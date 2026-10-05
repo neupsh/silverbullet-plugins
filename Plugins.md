@@ -25,6 +25,7 @@ After that, this page lists everything and keeps itself current: **Update** on t
 ${plugins.panel()}
 
 - **Install** writes the page. **Update** pulls the published version, and asks first if you edited your copy. **Remove** deletes the page.
+- Pages that have a toolbar button (`Folding`, `JournalCalendar`, `TreeViewLinks`) add it to the top bar when installed, and it goes when the page is removed. Existing buttons are kept.
 - Every change ends with a reload so new commands and styles take effect. Commands are also in the palette: `Plugins: Install`, `Plugins: Update`, `Plugins: Remove`, `Plugins: Update All`.
 - A page marked **edited** differs from what was installed. Update replaces your edits after a confirm.
 - Keep the page path `Library/neupsh/<Name>`. Several add-ons read their own page by that name.
@@ -35,10 +36,13 @@ plugins = plugins or {}
 local REPO = "github:neupsh/silverbullet-plugins/"
 local FOLDER = "Library/neupsh/"
 
--- name, group, what it does. The one list this page keeps; add a row when the repo gains a page.
+-- name, group, what it does, and optionally the toolbar buttons the page adds when installed.
+-- The one list this page keeps; add a row when the repo gains a page.
 plugins.catalog = {
   { "Plugins", "Manager", "This page. Update it to get the newest list." },
-  { "Folding", "Editing", "Collapse a heading section or bullet subtree, optionally remembered per page." },
+  { "Folding", "Editing", "Collapse a heading section or bullet subtree, optionally remembered per page.",
+    { { icon = "minimize2", command = "Fold: Toggle", description = "Fold/unfold the section or bullet at the cursor" },
+      { icon = "bookmark", command = "Fold: Keep Folded", description = "Remember this heading/bullet as folded" } } },
   { "TableEditor", "Editing", "Edit Markdown tables in place in the rendered view." },
   { "PlainTags", "Editing", "Show inline #tags as plain linked words (toggle command)." },
   { "ProseCopy", "Editing", "Copy a selection as prose, with tags and wiki links flattened." },
@@ -47,14 +51,17 @@ plugins.catalog = {
   { "MobileUX", "Layout", "Make the command palette, page picker and other modals usable on a phone." },
   { "TextDensity", "Layout", "Smaller text overall, sizes set under config." },
   { "LinkedWidgets", "Layout", "Move the Linked Tasks widget below the page body." },
-  { "TreeViewLinks", "Layout", "Open Tree View rows in a new tab on Ctrl/middle-click. Needs the Tree View plug." },
+  { "TreeViewLinks", "Layout", "Open Tree View rows in a new tab on Ctrl/middle-click. Needs the Tree View plug.",
+    { { icon = "sidebar", command = "Tree View: Toggle", description = "Toggle tree view" } } },
   { "EditorLayout", "Appearance", "Wider editor (80%, 95% on a phone) and headings that do not indent." },
   { "TokyoNightTheme", "Appearance", "A Tokyo Night inspired dark theme." },
   { "VersionBadge", "Top bar and page info", "Show the SilverBullet version in the top bar." },
   { "SyncBadge", "Top bar and page info", "Show how long ago git last fetched. Needs a git space and shell access." },
   { "PageDates", "Top bar and page info", "Created / Updated line on every page, created date from git." },
   { "JournalFeatures", "Journal", "Prev/next day links, a rollup of everything scheduled for the day, a stream page." },
-  { "JournalCalendar", "Journal", "Month-grid picker that opens or creates any journal day." },
+  { "JournalCalendar", "Journal", "Month-grid picker that opens or creates any journal day.",
+    { { icon = "sun", command = "Journal: Today", description = "Open today's journal" },
+      { icon = "calendar", command = "Journal: Open Day", description = "Open any journal day (calendar)" } } },
   { "JournalPromote", "Journal", "Move a bullet and its children to their own page, leaving a linked task." },
   { "JournalConventions", "Journal", "A short note on working in the journal first and promoting later." },
 }
@@ -224,6 +231,37 @@ command.define {
     if n > 0 then reload() end
   end
 }
+
+-- Adds the toolbar buttons of every installed page to `actionButtons`, next to whatever is
+-- already there. Deduplicated by command, so running it again (this page loads twice at boot,
+-- and it re-runs on page load) never doubles a button. Because it reads what is installed, Remove
+-- takes a page's buttons away on the next reload.
+function plugins.syncButtons()
+  local buttons = config.get("actionButtons", {})
+  local seen = {}
+  for _, b in ipairs(buttons) do
+    seen[b.command or b.description] = true
+  end
+  for _, e in ipairs(plugins.catalog) do
+    if e[4] and space.pageExists(FOLDER .. e[1]) then
+      for _, b in ipairs(e[4]) do
+        if not seen[b.command] then
+          table.insert(buttons, { icon = b.icon, command = b.command, description = b.description })
+          seen[b.command] = true
+        end
+      end
+    end
+  end
+  config.set("actionButtons", buttons)
+end
+
+plugins.syncButtons()
+
+-- The Std library registers some buttons after this page loads; re-running keeps ours in the list.
+-- `event` is not bound during the early boot-config pass.
+if event then
+  event.listen { name = "editor:pageLoaded", run = plugins.syncButtons }
+end
 
 -- A button that runs a palette command for one plugin. The page name goes in as an argument,
 -- never into the handler text, so no quoting can break it.
