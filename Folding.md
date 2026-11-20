@@ -129,14 +129,9 @@ function folding.key(lineText)
   return kind .. "-" .. string.sub(slug, 1, 60)
 end
 
--- CodeMirror counts offsets in UTF-16 code units; Lua's `#` counts bytes and Space Lua
--- has no `utf8` library. Count non-continuation bytes, then add one more for every
--- 4-byte sequence (lead byte F0-F4) since those are a surrogate pair to CodeMirror.
--- Without this, one emoji above the cursor shifts every offset below it.
+-- Space Lua strings and CodeMirror offsets both use UTF-16 code units.
 function folding.charLen(s)
-  local _, chars = string.gsub(s, "[^\128-\191]", "")
-  local _, astral = string.gsub(s, "[\240-\244]", "")
-  return chars + astral
+  return #s
 end
 
 -- The document as {from, to, text} records, `from`/`to` in CodeMirror offsets.
@@ -168,40 +163,26 @@ function folding.storedList()
   return out
 end
 
--- Replace only the part of the document that actually changed. A whole-document
--- replaceRange would drop every active fold and the cursor along with them.
+-- Compute a single edit in Space Lua's native UTF-16 coordinates.
 function folding.replaceMinimal(old, new)
-  if old == new then
-    return
-  end
+  if old == new then return end
   local shortest = math.min(#old, #new)
   local head = 0
   while head < shortest and string.byte(old, head + 1) == string.byte(new, head + 1) do
     head = head + 1
   end
-  -- never cut in the middle of a UTF-8 sequence
-  while head > 0 do
-    local b = string.byte(old, head + 1)
-    if not b or b < 128 or b >= 192 then
-      break
-    end
-    head = head - 1
-  end
+  -- Keep a shared high surrogate with its changed low surrogate.
+  local h = head > 0 and string.byte(old, head) or 0
+  if h >= 55296 and h <= 56319 then head = head - 1 end
   local tail = 0
-  while tail < (shortest - head)
+  while tail < shortest - head
     and string.byte(old, #old - tail) == string.byte(new, #new - tail) do
     tail = tail + 1
   end
-  while tail > 0 do
-    local b = string.byte(old, #old - tail + 1)
-    if not b or b < 128 or b >= 192 then
-      break
-    end
-    tail = tail - 1
-  end
-  local from = folding.charLen(string.sub(old, 1, head))
-  local to = from + folding.charLen(string.sub(old, head + 1, #old - tail))
-  editor.replaceRange(from, to, string.sub(new, head + 1, #new - tail))
+  -- A shared low surrogate must stay with its changed high surrogate.
+  local t = tail > 0 and string.byte(old, #old - tail + 1) or 0
+  if t >= 56320 and t <= 57343 then tail = tail - 1 end
+  editor.replaceRange(head, #old - tail, string.sub(new, head + 1, #new - tail))
 end
 
 -- Always delete before setting. `set-key` on a key that already holds a list *merges*
